@@ -1,0 +1,16 @@
+{
+  "pluginOsCommandName": "系统命令",
+  "pluginOsCommandDescription": "通过伴侣应用程序在操作系统上执行命令。",
+  "actionTypeOs": "操作系统命令",
+  "osCommandLabel": "系统命令 (Command)",
+  "osCommandPlaceholder": "例如: click, scroll_down, key_tap:enter",
+  "osCommandHelp": "需要运行 GestureVision 伴侣应用程序。",
+  "osTargetLabel": "目标应用/窗口 (Target, 可选)",
+  "osTargetPlaceholder": "例如: Spotify, Microsoft PowerPoint",
+  "osTargetHelp": "如果命令需要，请指定应用程序名称或窗口标题。",
+  "osCompanionHostLabel": "伴侣应用主机 (可选)",
+  "osCompanionHostHelp": "运行伴侣应用程序的计算机的 IP 地址或主机名（默认为 localhost）。",
+  "invalidOsCommandActionSettings": "无效的 OS Command 动作设置",
+  "localhost": "localhost",
+  "Host": "主机"
+}

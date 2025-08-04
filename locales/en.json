@@ -1,0 +1,16 @@
+{
+  "pluginOsCommandName": "OS Command",
+  "pluginOsCommandDescription": "Executes commands on the operating system via a companion app.",
+  "actionTypeOs": "OS Command",
+  "osCommandLabel": "Command",
+  "osCommandPlaceholder": "e.g., click, scroll_down, key_tap:enter",
+  "osCommandHelp": "Requires the GestureVision Companion App running.",
+  "osTargetLabel": "Target App/Window (Optional)",
+  "osTargetPlaceholder": "e.g., Spotify, Microsoft PowerPoint",
+  "osTargetHelp": "Specify app name or window title if needed by command.",
+  "osCompanionHostLabel": "Companion Host (Optional)",
+  "osCompanionHostHelp": "IP address or hostname of the machine running the Companion App (default: localhost).",
+  "invalidOsCommandActionSettings": "Invalid OS Command action settings",
+  "localhost": "localhost",
+  "Host": "Host"
+}

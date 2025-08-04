@@ -1,0 +1,17 @@
+{
+  "id": "os-command",
+  "nameKey": "pluginOsCommandName",
+  "descriptionKey": "pluginOsCommandDescription",
+  "version": "1.0.0",
+  "author": "GestureVision Team",
+  "icon": {
+    "type": "material-icons",
+    "name": "terminal"
+  },
+  "capabilities": {
+    "hasGlobalSettings": false,
+    "providesActions": true
+  },
+  "backendEntry": "backend.plugin.js",
+  "frontendEntry": "frontend/index.js"
+}
