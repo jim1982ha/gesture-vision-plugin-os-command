@@ -1,8 +1,8 @@
 {
-  "id": "os-command",
+  "id": "gesture-vision-plugin-os-command",
   "nameKey": "pluginOsCommandName",
   "descriptionKey": "pluginOsCommandDescription",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "GestureVision Team",
   "icon": {
     "type": "material-icons",
