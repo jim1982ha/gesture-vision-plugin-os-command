@@ -1,8 +1,7 @@
 /* FILE: extensions/plugins/os-command/frontend/index.js */
 const osCommandPluginFrontendModule = {
     manifest: { /* will be populated by loader */ },
-    actionSettingsFields: (context) => {
-        const { translate } = context.services;
+    actionSettingsFields: () => {
         return [
             { id: 'osCommand', type: 'text', labelKey: 'osCommandLabel', placeholderKey: 'osCommandPlaceholder', helpTextKey: 'osCommandHelp', required: true },
             { id: 'osTarget', type: 'text', labelKey: 'osTargetLabel', placeholderKey: 'osTargetPlaceholder', helpTextKey: 'osTargetHelp' },
@@ -11,10 +10,14 @@ const osCommandPluginFrontendModule = {
     },
     getActionDisplayDetails: (settings, context) => {
         const { translate } = context.services;
-        if (!settings?.osCommand) return [{ icon: 'error_outline', value: translate("invalidOsCommandActionSettings") }];
-        const details = [{ icon: 'terminal', value: settings.osCommand }];
-        if (settings.osTarget) details.push({ icon: 'desktop_windows', value: settings.osTarget });
-        if (settings.companionHost) details.push({ icon: 'dns', value: `${translate("Host")}: ${settings.companionHost}` });
+        const { GESTURE_CATEGORY_ICONS } = context.shared.constants;
+
+        if (!settings?.osCommand) return [{ icon: GESTURE_CATEGORY_ICONS.UI_ERROR.iconName, value: translate("invalidOsCommandActionSettings") }];
+        
+        const details = [{ icon: GESTURE_CATEGORY_ICONS.UI_TERMINAL.iconName, value: settings.osCommand }];
+        if (settings.osTarget) details.push({ icon: GESTURE_CATEGORY_ICONS.UI_DESKTOP.iconName, value: settings.osTarget });
+        if (settings.companionHost) details.push({ icon: GESTURE_CATEGORY_ICONS.UI_DNS.iconName, value: `${translate("Host")}: ${settings.companionHost}` });
+        
         return details;
     },
 };

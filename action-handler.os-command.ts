@@ -4,7 +4,7 @@ import WebSocket from 'ws';
 import { createErrorResult, createSuccessResult } from '#backend/utils/action-helpers.js';
 import { type OsCommandActionInstanceSettings } from './schemas.js';
 
-import type { ActionDetails, ActionResult } from '#shared/types/index.js';
+import type { ActionDetails, ActionResult } from '#shared/index.js';
 import type { ActionHandler, BackendPluginContext } from '#backend/types/index.js';
 
 export class OsCommandActionHandler implements ActionHandler {

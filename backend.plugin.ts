@@ -3,7 +3,7 @@ import { BaseBackendPlugin } from '#backend/plugins/base-backend.plugin.js';
 import { OsCommandActionHandler } from './action-handler.os-command.js';
 import { OsCommandActionSettingsSchema } from './schemas.js';
 import manifest from './plugin.json' with { type: 'json' };
-import type { PluginManifest } from "#shared/types/index.js";
+import type { PluginManifest } from "#shared/index.js";
 
 class OsCommandBackendPlugin extends BaseBackendPlugin {
   constructor() {
