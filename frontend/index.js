@@ -1,4 +1,10 @@
 /* FILE: extensions/plugins/os-command/frontend/index.js */
+
+// Ensure the global registry exists
+if (!window.GestureVisionPlugins) {
+  window.GestureVisionPlugins = {};
+}
+
 const osCommandPluginFrontendModule = {
     manifest: { /* will be populated by loader */ },
     actionSettingsFields: () => {
@@ -21,4 +27,8 @@ const osCommandPluginFrontendModule = {
         return details;
     },
 };
+
+// Register the module with the global registry
+window.GestureVisionPlugins['gesture-vision-plugin-os-command'] = osCommandPluginFrontendModule;
+
 export default osCommandPluginFrontendModule;
