@@ -15,7 +15,7 @@ const osCommandPluginFrontendModule = {
         ];
     },
     getActionDisplayDetails: (settings, context) => {
-        const { translate } = context.services;
+        const { translate } = context.services.translationService;
         const { GESTURE_CATEGORY_ICONS } = context.shared.constants;
 
         if (!settings?.osCommand) return [{ icon: GESTURE_CATEGORY_ICONS.UI_ERROR.iconName, value: translate("invalidOsCommandActionSettings") }];
