@@ -1,67 +1,57 @@
-/* FILE: extensions/plugins/os-command/action-handler.os-command.ts */
-import WebSocket from 'ws';
 import type { Response } from 'node-fetch';
 
 import { executeWithRetry, createErrorResult } from '#backend/utils/action-helpers.js';
 import { type OsCommandActionInstanceSettings } from './schemas.js';
+import type { WebSocketConnectionManager } from '#shared/services/connection-manager.js';
 
 import type { ActionDetails, ActionResult } from '#shared/index.js';
-import type { ActionHandler, BackendPluginContext } from '#backend/types/index.js';
+import type { ActionHandler } from '#backend/types/index.js';
 
 export class OsCommandActionHandler implements ActionHandler {
-  constructor() {}
+  #connectionManager: WebSocketConnectionManager;
+
+  constructor(connectionManager: WebSocketConnectionManager) {
+    this.#connectionManager = connectionManager;
+  }
 
   async execute(
     instanceSettings: OsCommandActionInstanceSettings,
-    _actionDetails: ActionDetails,
-    _pluginGlobalConfig?: unknown,
-    context?: BackendPluginContext
+    _actionDetails: ActionDetails
   ): Promise<ActionResult> {
     if (!instanceSettings.osCommand) {
       return createErrorResult('OS Command Action Error: Command not specified.', {
         settings: instanceSettings,
       });
     }
-    if (!context?.connectToCompanion) {
-      return createErrorResult(
-        'Core Error: Companion connection utility is not available.',
-        { contextAvailable: !!context }
-      );
-    }
 
     const targetHost = instanceSettings.companionHost?.trim() || 'localhost';
+    const companionUrl = `ws://${targetHost}:9003/ws`;
 
     const actionFn = async () => {
-      let socket: WebSocket | null = null;
-      try {
-        socket = (await context.connectToCompanion(targetHost)) as WebSocket | null;
-        if (!socket) {
-          throw new Error('Failed to establish a valid WebSocket connection.');
-        }
-        const commandPayload = {
-          command: instanceSettings.osCommand,
-          target: instanceSettings.osTarget,
-        };
-        await new Promise<void>((resolve, reject) => {
-          const sendTimeout = setTimeout(() => reject(new Error(`Timeout sending command to Companion at ${targetHost}.`)), 2000);
-          socket?.send(JSON.stringify(commandPayload), (err) => {
-            clearTimeout(sendTimeout);
-            if (err) reject(err);
-            else resolve();
-          });
+      const socket = await this.#connectionManager.getConnection(companionUrl);
+      
+      const commandPayload = {
+        command: instanceSettings.osCommand,
+        target: instanceSettings.osTarget,
+      };
+      
+      await new Promise<void>((resolve, reject) => {
+        const sendTimeout = setTimeout(() => reject(new Error(`Timeout sending command to Companion at ${targetHost}.`)), 2000);
+        socket.send(JSON.stringify(commandPayload), (err?: Error) => {
+          clearTimeout(sendTimeout);
+          if (err) reject(err);
+          else resolve();
         });
-        const mockResponse = { ok: true, status: 200 } as Response;
-        return { response: mockResponse, responseBody: instanceSettings };
-      } finally {
-        if (socket?.readyState === WebSocket.OPEN) socket.close(1000, 'Command sent');
-        else if (socket) socket.terminate();
-      }
+      });
+      
+      const mockResponse = { ok: true, status: 200 } as Response;
+      return { response: mockResponse, responseBody: instanceSettings };
     };
     
     const isRetryable = (error: unknown): boolean => {
       if (error instanceof Error) {
         const msg = error.message.toLowerCase();
-        return msg.includes('timeout') || msg.includes('refused') || msg.includes('not found');
+        return msg.includes('timeout') || msg.includes('refused') || msg.includes('not found') || msg.includes('closed');
       }
       return false;
     };
